@@ -1,0 +1,191 @@
+import { MaterialIcons } from '@expo/vector-icons';
+import { useState } from 'react';
+import { Image, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
+
+const Search = () => {
+  const [query, setQuery] = useState("")
+  const [filter, setFilter] = useState("Top results");
+
+
+  const filters = ['Top results', 'Songs', 'Videos', 'Artists', 'Albums', 'Playlists', 'Podcasts'];
+
+
+  return (
+    <View className="w-full h-full bg-black relative" style={{ paddingTop: 120 }}>
+
+
+
+      <View className='w-full bg-slate-00 absolute top-0 left-0 p-4 gap-3 z-[999]'>
+
+        {/* SEARCH BAR */}
+        <View className="bg-white/0 rounded-full w-full flex-row items-center h-11 px- gap-2">
+          <TouchableOpacity>
+            <MaterialIcons name="arrow-back" size={24} className="text-white bg-white/0 rounded-full h-11 w- items-center flex justify-center" />
+          </TouchableOpacity>
+
+          <View className="flex-row flex-1 items-center justify-between gap-3 bg-white/10 rounded-full h-full px-4">
+            <TextInput placeholder="What do you want to listen to?" className="outline-none w-full text-[1.6vh] text-white" />
+            <MaterialIcons name="close" size={20} className=" text-white/70" />
+          </View>
+
+        </View>
+
+        {/* FILTERS */}
+        <ScrollView
+          className='flex-row w-full'
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ gap: 8 }}
+        >
+          {filters.map((item) => (
+            <View key={item} onClick={() => setFilter(item)}>
+              <Text className={`text-[1.3vh] rounded-full p-1.5 px-3 cursor-pointer transition ${filter === item ? "bg-white text-black font-bol font-medium" : "bg-white/10 text-white"}`}>
+                {item}
+              </Text>
+            </View>
+          ))}
+
+        </ScrollView>
+      </View>
+
+      <View className='mb-2'>
+        <View className='flex-row items-center justify-between px-4 p-3.5 active:bg-white/10'>
+
+          <View className='flex-row items-center gap-2'>
+            <MaterialIcons name="search" size={21} className=" text-white/60" />
+            <Text className='text-white/60 tracking-tight text-[1.7vh]'>Drake</Text>
+          </View>
+
+          <View className='flex-row gap-3 items-center'>
+            {/* <TouchableOpacity>
+              <MaterialIcons name="close" size={22} className=" text-white/60" />
+            </TouchableOpacity> */}
+
+            <TouchableOpacity>
+              <MaterialIcons name="north-west" size={21} className=" text-white/60" />
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
+        <View className='flex-row items-center justify-between px-4 p-3.5 active:bg-white/10'>
+
+          <View className='flex-row items-center gap-2'>
+            <MaterialIcons name="search" size={21} className=" text-white/60" />
+            <Text className='text-white/60 tracking-tight text-[1.7vh]'>Drake</Text>
+          </View>
+
+          <View className='flex-row gap-3 items-center'>
+            {/* <TouchableOpacity>
+              <MaterialIcons name="close" size={22} className=" text-white/60" />
+            </TouchableOpacity> */}
+
+            <TouchableOpacity>
+              <MaterialIcons name="north-west" size={21} className=" text-white/60" />
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
+        <View className='flex-row items-center justify-between px-4 p-3.5 active:bg-white/10'>
+
+          <View className='flex-row items-center gap-2'>
+            <MaterialIcons name="search" size={21} className=" text-white/60" />
+            <Text className='text-white/60 tracking-tight text-[1.7vh]'>Drake</Text>
+          </View>
+
+          <View className='flex-row gap-3 items-center'>
+            {/* <TouchableOpacity>
+              <MaterialIcons name="close" size={22} className=" text-white/60" />
+            </TouchableOpacity> */}
+
+            <TouchableOpacity>
+              <MaterialIcons name="north-west" size={21} className=" text-white/60" />
+            </TouchableOpacity>
+          </View>
+
+        </View>
+
+        <View className='flex-row items-center justify-between px-4 p-3.5 active:bg-white/10'>
+
+          <View className='flex-row items-center gap-2'>
+            <MaterialIcons name="search" size={21} className=" text-white/60" />
+            <Text className='text-white/60 tracking-tight text-[1.7vh]'>Drake</Text>
+          </View>
+
+          <View className='flex-row gap-3 items-center'>
+            {/* <TouchableOpacity>
+              <MaterialIcons name="close" size={22} className=" text-white/60" />
+            </TouchableOpacity> */}
+
+            <TouchableOpacity>
+              <MaterialIcons name="north-west" size={21} className=" text-white/60" />
+            </TouchableOpacity>
+          </View>
+
+        </View>
+        
+      
+      </View>
+
+      <View>
+        <View className="flex-row items-center gap-3 px-4 p-1.5 active:bg-white/10">
+          <Image source={require('../../assets/images/d.png')} style={{ width: '6vh', height: '6vh', borderRadius: '100%' }} resizeMode='cover' />
+          <View className="flex-1">
+            <Text className="text-white text-[1.6vh] tracking-tight">Don Toliver</Text>
+            <Text className="text-white/60 text-[1.3vh]">Artist</Text>
+          </View>
+
+          <MaterialIcons name="more-vert" color="rgba(255,255,255,0.3)" size={20} />
+        </View>
+
+        <View className="flex-row items-center gap-3 px-4 p-1.5 active:bg-white/10">
+          <Image source={require('../../assets/images/d.png')} style={{ width: '6vh', height: '6vh', borderRadius: '0.6vh' }} resizeMode='cover' />
+          <View className="flex-1">
+            <Text className="text-white text-[1.6vh] tracking-tight">BROTHER STONE</Text>
+            <View className="flex-row">
+              <MaterialIcons color="rgba(255,255,255,0.6)" style={{ marginRight: 4 }} name="explicit" size={13} />
+              <Text className="text-white/60 text-[1.3vh]">Don Toilver, Kodak Black</Text>
+            </View>
+          </View>
+
+          <MaterialIcons name="more-vert" color="rgba(255,255,255,0.3)" size={20} />
+        </View>
+
+        <View className="flex-row items-center gap-3 px-4 p-1.5 active:bg-white/10">
+          <Image source={require('../../assets/images/ts.webp')} style={{ width: '6vh', height: '6vh', borderRadius: '0.6vh' }} resizeMode='cover' />
+          <View className="flex-1">
+            <Text className="text-white text-[1.6vh] tracking-tight">Stargrazing</Text>
+            <View className="flex-row">
+              <MaterialIcons color="rgba(255,255,255,0.6)" style={{ marginRight: 4 }} name="explicit" size={13} />
+              <Text className="text-white/60 text-[1.3vh]">Travis Scott</Text>
+            </View>
+          </View>
+
+          <MaterialIcons name="more-vert" color="rgba(255,255,255,0.3)" size={20} />
+        </View>
+      </View>
+
+
+      
+
+
+
+      {/* EMPTY STATE */}
+      {/* {!query && (
+        <View className="w-full h-[70vh] flex flex-col items-center justify-center">
+          <Text className="font-bold text-white">Play what you love</Text>
+          <Text className="opacity-70 text-[1.3vh] text-white">Search for artists, songs, albums and more.</Text>
+        </View>
+      )} */}
+
+
+
+
+
+    </View>
+  )
+}
+
+export default Search

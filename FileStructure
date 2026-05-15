@@ -1,0 +1,131 @@
+FILE STRUCTURE:
+
+
+music-app/
+├── app/                                 # Expo Router
+│   ├── _layout.jsx                      # Root layout + providers
+│   ├── (tabs)/
+│   │   ├── _layout.jsx                  # Bottom tab navigator
+│   │   ├── index.jsx                    # Home
+│   │   ├── search.jsx                   # Search
+│   │   ├── library.jsx                  # Your Library
+│   │   └── explore.jsx                  # Charts / Moods
+│   ├── album/
+│   │   └── [browseId].jsx               # Album detail screen
+│   ├── artist/
+│   │   └── [channelId].jsx              # Artist detail screen
+│   ├── playlist/
+│   │   └── [playlistId].jsx             # Playlist screen
+│   └── player/
+│       └── index.jsx                    # Full screen player
+│
+├── features/
+│   ├── home/
+│   │   ├── components/
+│   │   │   ├── FeaturedBanner.jsx
+│   │   │   ├── QuickPicksRow.jsx
+│   │   │   └── SectionRow.jsx
+│   │   └── hooks/
+│   │       └── useHome.js
+│   │
+│   ├── search/
+│   │   ├── components/
+│   │   │   ├── SearchBar.jsx
+│   │   │   ├── SearchResults.jsx
+│   │   │   └── SearchSuggestions.jsx
+│   │   └── hooks/
+│   │       ├── useSearch.js
+│   │       └── useSearchSuggestions.js
+│   │
+│   ├── album/
+│   │   ├── components/
+│   │   │   ├── AlbumHeader.jsx
+│   │   │   ├── SongList.jsx
+│   │   │   ├── AlbumTabs.jsx
+│   │   │   └── About.jsx               # ← your current component
+│   │   └── hooks/
+│   │       └── useAlbum.js
+│   │
+│   ├── artist/
+│   │   ├── components/
+│   │   │   ├── ArtistHeader.jsx
+│   │   │   ├── TopSongs.jsx
+│   │   │   ├── AlbumsRow.jsx
+│   │   │   ├── SinglesRow.jsx
+│   │   │   └── RelatedArtists.jsx
+│   │   └── hooks/
+│   │       ├── useArtist.js
+│   │       └── useArtistAlbums.js
+│   │
+│   ├── player/
+│   │   ├── components/
+│   │   │   ├── MiniPlayer.jsx
+│   │   │   ├── FullPlayer.jsx
+│   │   │   ├── PlayerControls.jsx
+│   │   │   ├── ProgressBar.jsx
+│   │   │   ├── QueueList.jsx
+│   │   │   └── LyricsView.jsx
+│   │   ├── hooks/
+│   │   │   └── usePlayer.js
+│   │   └── store/
+│   │       └── playerStore.js
+│   │
+│   ├── library/
+│   │   ├── components/
+│   │   │   ├── LibraryTabs.jsx
+│   │   │   ├── PlaylistCard.jsx
+│   │   │   └── ArtistCard.jsx
+│   │   └── hooks/
+│   │       ├── useLibraryPlaylists.js
+│   │       ├── useLibrarySongs.js
+│   │       └── useLibraryAlbums.js
+│   │
+│   └── explore/
+│       ├── components/
+│       │   ├── MoodGrid.jsx
+│       │   └── ChartsSection.jsx
+│       └── hooks/
+│           ├── useMoods.js
+│           └── useCharts.js
+│
+├── components/                          # Shared UI
+│   ├── ui/
+│   │   ├── Card.jsx
+│   │   ├── Thumbnail.jsx
+│   │   ├── Badge.jsx
+│   │   ├── Skeleton.jsx
+│   │   └── IconButton.jsx
+│   └── layout/
+│       ├── Screen.jsx
+│       └── SectionHeader.jsx
+│
+├── services/
+│   ├── musicApi.js                      # All fetch calls to FastAPI
+│   └── queryClient.js                   # React Query setup
+│
+├── store/
+│   ├── playerStore.js                   # Zustand — current track, queue
+│   └── authStore.js                     # OAuth token
+│
+├── hooks/
+│   ├── useDebounce.js
+│   └── useColorScheme.js
+│
+├── constants/
+│   ├── theme.js
+│   └── api.js                           # BASE_URL, endpoints
+│
+├── assets/
+│   ├── images/
+│   └── fonts/
+│
+└── backend/
+    ├── main.py
+    ├── routes/
+    │   ├── album.py
+    │   ├── artist.py
+    │   ├── search.py
+    │   ├── home.py
+    │   └── player.py
+    ├── requirements.txt
+    └── oauth.json
