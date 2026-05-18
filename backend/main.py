@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import album, artist, search, home
+from routes import album, artist, search, home,player
+
 
 app = FastAPI()
 
@@ -18,6 +19,7 @@ app.include_router(album.router,  prefix="/album")
 app.include_router(artist.router, prefix="/artist")
 app.include_router(search.router, prefix="/search")
 app.include_router(home.router,   prefix="/home")
+app.include_router(player.router, prefix="/player")
 
 @app.get("/")
 def root():

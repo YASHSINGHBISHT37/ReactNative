@@ -4,7 +4,8 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
   const openAlbum = () => {
-      router.push('/album/MPREb_y17shKO1nZm');
+      // router.push('/album/MPREb_y17shKO1nZm');
+      router.push('/album/MPREb_oj3xX6DIoZQ');
   };
 
   return (

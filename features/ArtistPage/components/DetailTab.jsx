@@ -55,9 +55,9 @@ const DetailTab = ({ artist }) => {
                                 end={{ x: 1, y: 1 }}
                             >
 
-                                {/* ALBUM INFO */}
+                                {/* ARTIST INFO */}
                                 <View className=''>
-                                    <Text className="text-white font-bold tracking-tighter text-[4vh] ">{artist.artist}</Text>
+                                    <Text className="text-white font-bold tracking-tighter text-[4vh] ">{artist.name}</Text>
                                     <Text className="text-white/60 text-[1.5vh] -mt-0.6">100 monthly audience</Text>
                                 </View>
 
@@ -103,3 +103,5 @@ const DetailTab = ({ artist }) => {
 }
 
 export default DetailTab
+
+

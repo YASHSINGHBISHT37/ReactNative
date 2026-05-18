@@ -20,9 +20,9 @@ const Bar = ({ delay, isPlaying }) => {
   }));
 
   return (
-    <Animated.View style={[{ width: 2.4, backgroundColor: 'white', borderRadius: 1, marginHorizontal: 1.4 }, style]} />
-  );
-};
+    <Animated.View style={[{ width: 3, backgroundColor: 'lightblue', borderRadius: 100, marginHorizontal: 1.4 }, style]} />
+  )
+}
 
 const PlayingIndicator = ({ isPlaying }) => {
   return (

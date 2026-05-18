@@ -1,221 +1,138 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import { useRef, useState } from 'react';
-import { Animated, Image, PanResponder, Text, TouchableOpacity, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'; // or 'react-native-linear-gradient'
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import Album from '../../components/Album';
+import { artistData } from '../../features/ArtistPage/components/artistData';
 
-const Settings = () => {
-  const [sheetOpen, setSheetOpen] = useState(false);
-  const slideAnim = useRef(new Animated.Value(600)).current;
 
-  const openSheet = () => {
-    setSheetOpen(true);
-    Animated.spring(slideAnim, {
-      toValue: 0,
-      useNativeDriver: true,
-      tension: 60,
-      friction: 12,
-    }).start();
-  };
-
-  const closeSheet = () => {
-    Animated.timing(slideAnim, {
-      toValue: 600,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => setSheetOpen(false));
-  };
-
-  const panResponder = useRef(
-    PanResponder.create({
-      onMoveShouldSetPanResponder: (_, g) => g.dy > 10,
-      onPanResponderMove: (_, g) => {
-        if (g.dy > 0) slideAnim.setValue(g.dy);
-      },
-      onPanResponderRelease: (_, g) => {
-        if (g.dy > 100) {
-          closeSheet();
-        } else {
-          Animated.spring(slideAnim, {
-            toValue: 0,
-            useNativeDriver: true,
-          }).start();
-        }
-      },
-    })
-  ).current;
-
-  const togglePlay = async () => {
-    if (!sound) return;
-    isPlaying ? await sound.pauseAsync() : await sound.playAsync();
-  };
+const Artist = () => {
+  const artist = artistData
 
   return (
-    <View className='w-full h-full bg-black pt-10 px-4 relative'>
+    <View className="flex-1 bg-black relative">
+      <Album/>
 
-      {/* HEADER */}
-      <View className="flex-row items-center justify-between">
-        <TouchableOpacity>
-          <MaterialIcons name="keyboard-arrow-down" size={32} color="rgba(255,255,255,0.7)" />
+      {/* BACK BUTTON overlaid on image */}
+      <View className="absolute top-0 left-0 right-0 flex-row items-center justify-between px-4 p-4 z-10 bg-black">
+        <TouchableOpacity onPress={() => router.back()}>
+          <MaterialIcons name="arrow-back" size={26} color="white" />
         </TouchableOpacity>
-        <View className="items-center">
-          <Text className="text-white/50 text-[1.2vh] tracking-widest">NOW PLAYING</Text>
-          <Text className="text-white font-medium text-[1.5vh]">HARDSTONE PSYCHO</Text>
-        </View>
-        <MaterialIcons name="more-vert" size={24} color="rgba(255,255,255,0.6)" />
-      </View>
-
-      {/* ARTWORK */}
-      <View className="w-full items-center mt-16">
-        <View className="w-[45vh] h-[45vh] overflow-hidden" style={{ borderRadius: 6 }}>
-          <Image
-            source={require('../../assets/images/d.png')}
-            style={{ width: '100%', height: '100%' }}
-            resizeMode="cover"
-          />
+        <View className="flex-row items-center gap-4">
+          <MaterialIcons name="share" size={22} color="white" />
+          <MaterialIcons name="more-vert" size={22} color="white" />
         </View>
       </View>
 
-      {/* SONG INFO */}
-      <View className="flex-row items-center justify-between mt-5">
-        <View>
-          <Text className="text-white font-bold text-[2.4vh] tracking-tight">
-            HARDSTONE PSYCHO
-          </Text>
-          <View className="flex-row items-center gap-1">
-            <MaterialIcons name="explicit" size={15} color="rgba(255,255,255,0.5)" />
-            <Text className="text-white/50 text-[1.6vh]">Drake</Text>
-          </View>
-        </View>
-        <MaterialIcons name='favorite' size={26} color='#f87171' />
-      </View>
-
-      {/* PROGRESS BAR */}
-      <View className='mt-12 gap-4'>
-        <View className='w-full bg-white/20 h-1 rounded-full'>
-          <View className='w-10 bg-white h-full rounded-full' />
-        </View>
-        <View className='flex-row items-center justify-between'>
-          <Text className='text-white' style={{ fontSize: 12 }}>0:00</Text>
-          <Text className='text-white' style={{ fontSize: 12 }}>4:13</Text>
-        </View>
-      </View>
-
-      {/* CONTROLS */}
-      <View className='flex-row items-center justify-between mt-8 px-2'>
-        <TouchableOpacity activeOpacity={0.7}>
-          <MaterialIcons name="shuffle" size={24} color="rgba(255,255,255,0.6)" />
-        </TouchableOpacity>
-
-        <View className='flex-row items-center gap-6'>
-          <TouchableOpacity activeOpacity={0.7}>
-            <MaterialIcons name="skip-previous" size={38} color="white" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={togglePlay}
-            activeOpacity={0.85}
-            style={{
-              width: 64,
-              height: 64,
-              borderRadius: 32,
-              backgroundColor: 'white',
-              alignItems: 'center',
-              justifyContent: 'center',
-              elevation: 8,
-            }}
-          >
-            <MaterialIcons name="play-arrow" size={38} color="black" />
-          </TouchableOpacity>
-
-          <TouchableOpacity activeOpacity={0.7}>
-            <MaterialIcons name="skip-next" size={38} color="white" />
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity activeOpacity={0.7}>
-          <MaterialIcons name="loop" size={24} color="rgba(255,255,255,0.6)" />
-        </TouchableOpacity>
-      </View>
-
-      {/* OPEN SHEET BUTTON */}
-      <TouchableOpacity
-        onPress={openSheet}
-        className='mt-8 flex-row items-center justify-center gap-2'
-        activeOpacity={0.7}
-      >
-        <MaterialIcons name="queue-music" size={20} color="rgba(255,255,255,0.5)" />
-        <Text className='text-white/50 text-[1.4vh]'>Up Next</Text>
-      </TouchableOpacity>
 
 
-      <BlurView experimentalBlurMethod="dimezisBlurView" intensity={100} tint='dark' className='pt-10 px-4 h-full' style={{ position: 'absolute', inset: 0, zIndex: 999, backgroundColor: 'rgba(0,0,0,0)' }}>
-        {/* HEADER */}
-        <View className="items-end justify-end">
-          <MaterialIcons name="close" size={24} color="rgba(255,255,255,0.6)" />
-        </View>
+      <FlatList
+        data={artist.songs.slice(0, 6)}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        className="w-full h-auto pb-20"
+        ListHeaderComponent={() => (
+          <View className="w-full h-auto items-center justify-center " style={{ paddingTop: '38vh' }}>
 
-        {/* ARTWORK */}
-        <View className="w-full items-center mt-16">
-          <View className="w-[34vh] h-[34vh] overflow-hidden" style={{ borderRadius: 4 }}>
-            <Image
-              source={require('../../assets/images/d.png')}
-              style={{ width: '100%', height: '100%' }}
-              resizeMode="cover"
-            />
-          </View>
-        </View>
 
-        {/* SONG INFO */}
-        <View className="flex-col items-center justify-center mt-3">
-          <Text className="text-white font-medium text-[2.6vh] tracking-tight">BROTHER STONE</Text>
+            {/* ARTIST IMAGE */}
+            <View className='absolute top-0 left-0 right-0' style={{ width: '100%', 'height': '50vh' }}>
+              <Image source={artist.artistImg} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+            </View>
 
-          <View className="flex-row items-center gap-1.5">
-            <Text className="text-white/50 text-[1.6vh]">Drake</Text>
-            <View className="text-white text-[1.6vh] w-1 h-1" style={{ backgroundColor: 'rgba(255,255,255,0.7)', borderRadius: '100%' }}></View>
-            <Text className="text-white/50 text-[1.6vh]">HARDSTONE PSYCHO</Text>
-          </View>
-        </View>
-
-        <View className='mt-10'>
-          {[
-            { icon: 'favorite-border', label: 'Like', color: 'white' },
-            { icon: 'playlist-add', label: 'Add to a Playlist', color: 'white' },
-            { icon: 'album', label: 'View Album', color: 'white' },
-            { icon: 'person-outline', label: 'Go to Artist', color: 'white' },
-            { icon: 'info-outline', label: 'View Song Credits', color: 'white' },
-            { icon: 'share', label: 'Share', color: 'white' },
-          ].map((item, index, arr) => (
-            <TouchableOpacity
-              key={index}
-              activeOpacity={0.6}
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                paddingVertical: 4,
-                paddingHorizontal: 4,
-                borderBottomWidth: index < arr.length - 1 ? 1 : 0,
-                borderBottomColor: 'rgba(255,255,255,0)',
-              }}
+            {/* ACTION BUTTONS */}
+            <LinearGradient
+              colors={['rgba(0,0,0,0)', 'black']}
+              className='w-full'
+              start={{ x: 1, y: 0 }}
+              end={{ x: 1, y: 1 }}
             >
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <View style={{ width: 36, height: 36, borderRadius: 8, backgroundColor: 'rgba(255,255,255,0)', alignItems: 'center', justifyContent: 'center', }}>
-                  <MaterialIcons name={item.icon} size={20} color={item.color} />
+
+              <LinearGradient
+                colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.5)']}
+                className='w-full'
+                start={{ x: 1, y: 0 }}
+                end={{ x: 1, y: 1 }}
+              >
+
+                <LinearGradient
+                  colors={['rgba(0,0,0,0)', 'black']}
+                  className='w-full'
+                  start={{ x: 1, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                >
+
+                  <LinearGradient
+                    colors={['rgba(0,0,0,0)', 'black']}
+                    className='w-full px-4 gap-3'
+                    start={{ x: 1, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                  >
+
+                    {/* ARTIST INFO */}
+                    <View className=''>
+                      <Text className="text-white font-bold tracking-tighter text-[4vh] ">{artist.artist}</Text>
+                      <Text className="text-white/60 text-[1.4vh] tracking-tight -mt-0.6">100 monthly audience</Text>
+                    </View>
+
+                    {/* PLAY/ PAUSE */}
+                    <View className="flex-row items-center justify-between gap-3 w-full mb-4">
+                      <TouchableOpacity className="flex-row w-[vh] px-5 h-[4.3vh] gap-1 active:bg-white/10 border border-1 border-white/20 rounded-full items-center justify-center">
+                        <Text className="text-red-500/80 text-[1.5vh] -mt-0.6 font-medium">Subscribe</Text>
+                      </TouchableOpacity>
+
+                      <View className="flex-row items-center gap-3">
+                        <TouchableOpacity className="flex-row w-[11vh] h-[4.3vh] gap-1 active:bg-white/ border border-1 border-white/20 rounded-full items-center justify-center">
+                          <MaterialIcons name="radio-button-on" color="rgba(255,255,255,0.7)" size={20} />
+                          <Text className="text-white/60 text-[1.5vh] -mt-0.6">Radio</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity className="flex-row items-center justify-center bg-white rounded-full w-[5.6vh] h-[5.6vh]">
+                          <MaterialIcons name="play-arrow" size={30} />
+                        </TouchableOpacity>
+                      </View>
+
+                    </View>
+                  </LinearGradient>
+                </LinearGradient>
+              </LinearGradient>
+              -
+            </LinearGradient>
+
+            <View className='flex-row items-center justify-between w-full px-4 mb-3'>
+              <Text className="text-white font-bold tracking-tighter text-[2.2vh] ">Top songs</Text>
+              <MaterialIcons name="arrow-forward" color="rgba(255,255,255,0.6)" size={20} />
+            </View>
+
+          </View>
+        )}
+
+
+        renderItem={({ item }) => (
+          <View className="px-2 active:bg-white/20 ">
+            <View className="w-full flex-row items-center justify-between gap-3 pb-0 px-2 bg-black active:bg-white/10 rounded-[1vh]">
+              <Image source={artist.artistImg} className='rounded-[0.6vh]' style={{ height: '5.6vh', width: '5.6vh' }} />
+              <View className=' border-b border-white/10 flex-row flex-1 items-center justify-center h-16'>
+                <View className="flex-1">
+                  <Text className="text-white text-[1.5vh]">{item.title}</Text>
+                  <View className="flex-row items-center">
+                    <MaterialIcons color="rgba(255,255,255,0.6)" style={{ marginRight: 4 }} name="explicit" size={13} />
+                    <Text className="text-white/60 text-[1.3vh]">{item.artist}</Text>
+                  </View>
                 </View>
-                <Text style={{ color: 'white', fontSize: 15, fontWeight: '500' }}>{item.label}</Text>
+                {/* <Text className="text-white/40 text-[1.3vh] mr-2">{item.duration}</Text> */}
+
+                <TouchableOpacity className="" onPress={() => openBottomTab(item)}>
+                  <MaterialIcons name="more-vert" color="rgba(255,255,255,1)" size={20} />
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          ))}
+            </View>
+          </View>
+        )}
 
-        </View>
+      />
 
+    </View >
+  )
+}
 
-
-
-      </BlurView>
-
-    </View>
-  );
-};
-
-export default Settings;
+export default Artist

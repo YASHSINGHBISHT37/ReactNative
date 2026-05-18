@@ -1,14 +1,20 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { BlurView } from 'expo-blur';
-import { useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
-
+import { useRouter } from 'expo-router'; // ✅ add karo
+import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { usePlayerStore } from '../../../store/playerStore';
 
 export default function MiniPlayer({ song }) {
-    const [isPlaying, setIsPlaying] = useState(false)
+    const { currentSong, isPlaying, togglePlay } = usePlayerStore();
+    const router = useRouter();
+    if (!currentSong) return null;
 
     return (
-        <View className='bg-black' style={{ borderRadius: 100, overflow: 'hidden' }}>
+        <TouchableOpacity
+            activeOpacity={0.9}
+            className='bg-black'
+            style={{ borderRadius: 100, overflow: 'hidden' }}
+        >
             <BlurView
                 style={{
                     height: 64,
@@ -20,20 +26,23 @@ export default function MiniPlayer({ song }) {
                     borderWidth: 0.5,
                     borderColor: 'rgba(255,255,255,0.2)',
                 }}
-                // blurType="dark"
-                // blurAmount={0}
-                // reducedTransparencyFallbackColor="rgba(30,30,30,0.9)"
+            // blurType="dark"
+            // blurAmount={0}
+            // reducedTransparencyFallbackColor="rgba(30,30,30,0.9)"
             >
                 {/* Album Art + Info */}
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12, flex: 1, overflow: 'hidden' }}>
-                    <View style={{ width: 46, height: 46, borderRadius: 100, backgroundColor: '#2a2a2a' }} />
+                    <Image className='animate-spin'
+                        source={{ uri: currentSong.thumbnail }}
+                        style={{ width: 50, height: 50, borderRadius: 100, borderColor: 'rgba(255,255,255,0.2)', borderWidth: 1, }}
+                    />
 
                     <View style={{ flex: 1, gap: 2 }}>
                         <Text numberOfLines={1} style={{ color: 'white', fontSize: 14, fontWeight: '500' }}>
-                            {song?.title ?? 'Charcoal Baby'}
+                            {currentSong.title}
                         </Text>
                         <Text numberOfLines={1} style={{ color: 'rgba(255,255,255,0.55)', fontSize: 12 }}>
-                            {song?.artist ?? 'Don Toliver'}
+                            {currentSong.artist}
                         </Text>
                     </View>
                 </View>
@@ -50,13 +59,13 @@ export default function MiniPlayer({ song }) {
 
                     <TouchableOpacity
                         style={{ width: 36, height: 36, alignItems: 'center', justifyContent: 'center' }}
-                        onPress={() => setIsPlaying(p => !p)}
+                        onPress={togglePlay}
                     >
                         <MaterialIcons name={isPlaying ? 'pause' : 'play-arrow'} color="white" size={26} />
                     </TouchableOpacity>
                 </View>
 
             </BlurView>
-        </View>
+        </ TouchableOpacity>
     )
 }
